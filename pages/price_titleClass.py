@@ -1,11 +1,12 @@
 import tkinter as tk
 import customtkinter
 from utils import *
+from tkinter import filedialog
 
-from pandastable import Table, TableModel, config
+from pandastable import Table
 
 #Forms inherited from pydantic
-from classes.titleForm import titleInputForm
+from models.titleModel import titleInputForm
 
 # ----------------------------------------  CONTAINER ------------------------------------------------------------------------
 
@@ -68,19 +69,41 @@ class Price_title(tk.Frame):
             self.InputTitleForm.dateCourbe = self.entryCourbe.get()
             print(colored('Title parameters registered Successfully','green'))
 
+        def open_popup():
+            top= Toplevel(self)
+            top.geometry("300x150")
+            top.title("Choix d'un Fichier courbe personnalisé")
+            Entry(top).grid()
+            Button(top, text="Parcourir", command=donothing).grid()
+            Button(top, text="ok", command=donothing).grid()
+
+
+        def browseFiles():
+                filename = filedialog.askopenfilename(initialdir = "/",
+                                          title = "Select a File",
+                                          filetypes = (("Text files",
+                                                        "*.txt*"),
+                                                       ("all files",
+                                                        "*.*")))
+                print(filename)
+                return filename
+    
+        self.buttonImportCurve = customtkinter.CTkButton(master=self.frame_left,
+                                                    text="Importer une courbe",
+                                                    command=browseFiles)
+        self.buttonImportCurve.grid(row=5, column=0, pady=10, padx=20, sticky="w")
+
         
+
         self.buttonValidate = customtkinter.CTkButton(master=self.frame_left,
                                                     text="Valider",
                                                     command=store_title_input)
-        self.buttonValidate.grid(row=5, column=0, pady=10, padx=20, sticky="w")
+        self.buttonValidate.grid(row=6, column=0, pady=10, padx=20, sticky="w")
 
 
         # ====================RIGHT FRAME ===========================
 
-        self.table = pt = Table(self.frame_right,
-                        dataframe=get_fund_by_name("CIM"))
-        pt.show()
-
+        
     def create_menubar(self, parent):
         menubar = Menu(parent, bd=3, relief=RAISED, activebackground="#80B9DC")
 

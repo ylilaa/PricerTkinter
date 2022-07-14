@@ -2,12 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import customtkinter
 from utils import *
-from pandastable import Table, TableModel, config
 
 
 
 # Forms inherited from pydantic 
-from classes.fundForm import fundInputForm
+from models.fundModel import fundInputForm
 
 # ----------------------------------------  CONTAINER ------------------------------------------------------------------------
 
@@ -46,7 +45,7 @@ class Price_fund(tk.Frame):
                                             text_font=("Roboto Medium", -16))  # font name and size in px
         self.leftTitle.grid(row=1, column=0, pady=10, padx=10)
 
-        # Fonds drop down
+        # ========= Begin italian spaghetti code mama mia! must clean up later===========
         self.InputFundForm = fundInputForm()
         self.InputFundForm.name = initial_fund_display()
         
@@ -150,7 +149,7 @@ class Price_fund(tk.Frame):
                                                     command=store_fund_input)
         self.buttonValidate.grid(row=13, column=0, pady=10, padx=20, sticky="w")
 
-
+    # ===========End spaghetti===================
 
     def create_menubar(self, parent):
         menubar = Menu(parent, bd=3, relief=RAISED, activebackground="#80B9DC")

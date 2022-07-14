@@ -1,6 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
-from xml.dom.minidom import TypeInfo
+from tkinter import filedialog
+
+
+from models.titleModel import titleInputForm
 
 import pandas as pd
 import numpy as np
@@ -32,6 +35,28 @@ def get_funds_array():
     print(colored('List of Funds retrieved from database Successfully','green'))
     return array
 
+def title_pricing_display (input):
+    input = titleInputForm()
+    print(input.code)
+    df = pd.DataFrame(np.random.randint(0,100,size=(100, 5)), columns=['code','Date coupon','Amortissement','Restant','Coupon'])
+    return df
+
+
+def stress_test_display (input):
+    input = titleInputForm()
+    print(input.code)
+    df = pd.DataFrame(np.random.randint(0,100,size=(100, 4)), columns=['code','prix','sensibilité','duration'])
+    return df
+
+def openFile():
+    # takes file location and its type
+    file_location = filedialog.askopenfilename(initialdir="",
+                                          title="Dialog box",
+                                          filetypes= (("text files","*.txt"),
+                                          ("all files","*.*")))
+    file = open(file_location,'r')
+    print(file.read())
+    file.close()
 
 
 

@@ -41,7 +41,7 @@ class Price_fund(tk.Frame):
 
         # Title left grid
         self.leftTitle = customtkinter.CTkLabel(master=self.frame_left,
-                                            text="Pricer Fonds",
+                                            text="Calcul VL",
                                             text_font=("Roboto Medium", -16))  # font name and size in px
         self.leftTitle.grid(row=1, column=0, pady=10, padx=10)
 
@@ -158,6 +158,7 @@ class Price_fund(tk.Frame):
         
         actionmenu = Menu(menubar, tearoff=0, relief=RAISED)
         actionmenu.add_command(label="Pricer un Titre", command=lambda: parent.show_frame(parent.Price_title))
+        actionmenu.add_command(label="Stress Test", command=lambda: parent.show_frame(parent.Price_list))
         actionmenu.add_separator()
         actionmenu.add_command(label="Exit", command=parent.quit)
         menubar.add_cascade(label="Actions", menu=actionmenu)

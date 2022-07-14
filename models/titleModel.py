@@ -4,4 +4,5 @@ from typing import Optional
 class titleInputForm(BaseModel):
     code : Optional[str]
     dateValo : Optional[str]
-    dateCourbe : Optional[str]
+    courbeBAM : Optional[str]
+    courbeCustom : Optional[str]

@@ -10,6 +10,7 @@ from utils import *
 # Pages
 from pages.price_fundClass import Price_fund
 from pages.price_titleClass import Price_title
+from pages.price_listClass import Price_list
 
 
 
@@ -33,9 +34,10 @@ class App(tk.Tk):
         self.frames = {}
         self.Price_fund = Price_fund
         self.Price_title = Price_title
+        self.Price_list = Price_list
 
         # Defining frames and packing them, we show all frames stacked and raise one when needed
-        for F in {Price_fund, Price_title}:
+        for F in {Price_fund, Price_title, Price_list}:
             frame = F(self, container)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")

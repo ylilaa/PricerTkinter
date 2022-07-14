@@ -1,12 +1,12 @@
 import tkinter as tk
+from tkinter import ttk
 import customtkinter
 from utils import *
-from pandastable import Table, TableModel, config
 
 
 
 # Forms inherited from pydantic 
-from classes.fundForm import fundInputForm
+from models.fundModel import fundInputForm
 
 # ----------------------------------------  CONTAINER ------------------------------------------------------------------------
 
@@ -45,11 +45,63 @@ class Price_fund(tk.Frame):
                                             text_font=("Roboto Medium", -16))  # font name and size in px
         self.leftTitle.grid(row=1, column=0, pady=10, padx=10)
 
-        # Fonds drop down
-        self.optionFonds = customtkinter.CTkOptionMenu(master=self.frame_left,
-                                                    values=get_funds_array())
-        self.optionFonds.grid(row=2, column=0, pady=10, padx=20, sticky="w")
+        # ========= Begin italian spaghetti code mama mia! must clean up later===========
+        self.InputFundForm = fundInputForm()
+        self.InputFundForm.name = initial_fund_display()
+        
+        def store_fund_input():
+            self.InputFundForm.name = self.optionFonds.get()
+            self.InputFundForm.AN = self.entryAN.get()
+            self.InputFundForm.SR = self.entrySR.get()
+            self.InputFundForm.PEncours = self.entryPEncours.get()
+            self.InputFundForm.CEncours = self.entryCEncours.get()
+            self.InputFundForm.Agios = self.entryAgios.get()
+            self.InputFundForm.FdG = self.entryFdG.get()
+            self.InputFundForm.Banque = self.entryBanque.get()
+            self.InputFundForm.Levier = self.entryLevier.get()
+            self.InputFundForm.RREPO = self.entryRREPO.get()
+            self.InputFundForm.BDC = self.entryBDC.get()
+            print(colored('Fund parameters registered Successfully','green'))
 
+        self.dfTbl = get_fund_by_name(self.InputFundForm.name)
+        
+        
+        def load_table():
+            clear_data()
+            self.table['column'] = list(self.dfTbl.columns)
+            self.table['show'] = "headings"
+            for column in self.table["columns"]:
+                self.table.heading(column, text=column)
+            
+            df_rows = self.dfTbl.to_numpy().tolist()
+            for row in df_rows:
+                self.table.insert('','end',values=row)
+
+
+        
+        def tableChange(choice):
+            if choice != self.InputFundForm.name:
+                self.dfTbl = get_fund_by_name(choice)
+                load_table()
+        
+        
+        self.table = ttk.Treeview(self.frame_right)
+        self.table.place(relheight=1, relwidth=1)
+        def clear_data():
+            self.table.delete(*self.table.get_children())
+        
+        load_table()
+        tablescrolly = tk.Scrollbar(self.frame_right, orient="vertical", command=self.table.yview)
+        tablescrollx = tk.Scrollbar(self.frame_right, orient="horizontal", command=self.table.xview)
+        self.table.configure(xscrollcommand=tablescrollx.set,yscrollcommand=tablescrolly.set)
+        tablescrollx.pack(side="bottom", fill="x")
+        tablescrolly.pack(side="right", fill="y")
+
+        
+        self.optionFonds = customtkinter.CTkOptionMenu(master=self.frame_left,
+                                                    values=get_funds_array(), command=tableChange)
+        self.optionFonds.grid(row=2, column=0, pady=10, padx=20, sticky="w")
+        
         # Champs à remplir modèle excel 
         
         self.entryAN = customtkinter.CTkEntry(master=self.frame_left,
@@ -92,36 +144,12 @@ class Price_fund(tk.Frame):
                                             placeholder_text="BDC")
         self.entryBDC.grid(row=12, column=0, pady=10, padx=20, sticky="w")
 
-
-        self.InputFundForm = fundInputForm()
-        def store_fund_input():
-            self.InputFundForm.name = self.optionFonds.get()
-            self.InputFundForm.AN = self.entryAN.get()
-            self.InputFundForm.SR = self.entrySR.get()
-            self.InputFundForm.PEncours = self.entryPEncours.get()
-            self.InputFundForm.CEncours = self.entryCEncours.get()
-            self.InputFundForm.Agios = self.entryAgios.get()
-            self.InputFundForm.FdG = self.entryFdG.get()
-            self.InputFundForm.Banque = self.entryBanque.get()
-            self.InputFundForm.Levier = self.entryLevier.get()
-            self.InputFundForm.RREPO = self.entryRREPO.get()
-            self.InputFundForm.BDC = self.entryBDC.get()
-            print(colored('Fund parameters registered Successfully','green'))
-        
-
         self.buttonValidate = customtkinter.CTkButton(master=self.frame_left,
                                                     text="Valider",
                                                     command=store_fund_input)
         self.buttonValidate.grid(row=13, column=0, pady=10, padx=20, sticky="w")
 
-        
-
-        # ====================RIGHT FRAME ===========================
-
-        self.table = pt = Table(self.frame_right,
-                        dataframe=get_fund_by_name("CIM"))
-        pt.show()
-
+    # ===========End spaghetti===================
 
     def create_menubar(self, parent):
         menubar = Menu(parent, bd=3, relief=RAISED, activebackground="#80B9DC")

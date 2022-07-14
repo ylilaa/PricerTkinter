@@ -8,9 +8,9 @@ import customtkinter
 from utils import *
 
 # Pages
-from classes.price_fundClass import Price_fund
-from classes.price_titleClass import Price_title
-from classes.docsClass import DocsClass
+from pages.price_fundClass import Price_fund
+from pages.price_titleClass import Price_title
+
 
 
 class App(tk.Tk):
@@ -33,10 +33,9 @@ class App(tk.Tk):
         self.frames = {}
         self.Price_fund = Price_fund
         self.Price_title = Price_title
-        self.docs = DocsClass
 
         # Defining frames and packing them, we show all frames stacked and raise one when needed
-        for F in {Price_fund, Price_title, DocsClass}:
+        for F in {Price_fund, Price_title}:
             frame = F(self, container)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")

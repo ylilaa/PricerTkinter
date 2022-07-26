@@ -168,6 +168,8 @@ class Price_fund(tk.Frame):
             label="Actualiser les données depuis Manar", command=donothing)
         querymenu.add_command(
             label="Actualiser les données depuis fichier", command=donothing)
+        querymenu.add_command(
+            label="Actualiser les données depuis la base Access", command=donothing)
         menubar.add_cascade(label="Requêtes", menu=querymenu)
 
         helpmenu = Menu(menubar, tearoff=0, relief=RAISED)

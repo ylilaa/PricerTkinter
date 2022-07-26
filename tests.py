@@ -1,5 +1,10 @@
-from utils import *
+from msauce.lib import infine_fix_echeancier
+from models.titleModel import title
+import datetime
 
-get_fund_by_name("ACPLUS")
+titreTest = title()
+titreTest.dateJouissance = datetime.datetime(2020, 7, 22)
+titreTest.dateEcheance = datetime.datetime(2022, 7, 22)
+titreTest.periodicite = 'Q'
 
-get_funds_array()
+infine_fix_echeancier(titreTest)

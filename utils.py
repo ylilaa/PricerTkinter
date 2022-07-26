@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
+from datetime import datetime
+
 
 
 from models.titleModel import titleInputForm
@@ -27,6 +29,14 @@ def get_fund_by_name(fund):
     df = original_df[original_df['CODE_FONDS'] == fund]
     print(colored('Fund retrieved from database Successfully','green'))
     return df
+
+def get_title_by_code(titre):
+    config = AppConfig()
+    original_df = pd.read_excel(config.db_name)
+    df = original_df[original_df['CODE_TITRE'] == titre]
+    
+    
+
 
 def get_funds_array():
     config = AppConfig()
@@ -57,7 +67,6 @@ def openFile():
     file = open(file_location,'r')
     print(file.read())
     file.close()
-
 
 
 
